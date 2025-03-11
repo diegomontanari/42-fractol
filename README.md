@@ -75,6 +75,88 @@ When plotted, the Mandelbrot set creates a **beautiful, complex shape** in the c
 - It exhibits **chaotic behavior**—small changes in \( c \) can result in vastly different behaviors in the iteration.
 - Zooming in reveals **infinite detail**, with tiny versions of the Mandelbrot set appearing within itself.
 
+To generate fractals like Mandelbrot, Julia, or Burning Ship, we'll be using the MiniLibX library. This library allows you to create windows, display images, and manage pixels to visualize fractals efficiently.
+
+## Key Steps
+
+### 1. Setup MiniLibX Library
+Follow the resources available to set up the MiniLibX library on your project.
+
+### 2. Create Window and Image
+Utilize the MiniLibX functions to set up a window and an image to display your fractals.
+
+### 3. Iterate Through Pixels
+Loop through each pixel of the window and calculate the corresponding complex number that each pixel represents.
+
+## Fractal Drawing
+
+### Main Function: `draw_fractal`
+
+To generate fractals like Mandelbrot, Julia, or Burning Ship, we'll be using the MiniLibX library. This library allows you to create windows, display images, and manage pixels to visualize fractals efficiently.
+
+## Key Steps
+
+### 1. Setup MiniLibX Library
+Follow the resources available to set up the MiniLibX library on your project.
+
+### 2. Create Window and Image
+Utilize the MiniLibX functions to set up a window and an image to display your fractals.
+
+### 3. Iterate Through Pixels
+Loop through each pixel of the window and calculate the corresponding complex number that each pixel represents.
+
+## Fractal Drawing
+
+### Main Function: `draw_fractal`
+
+```c
+int draw_fractal(t_fractal *fractal, char *query, double cx, double cy)
+```
+# Fractal Calculation
+
+## `draw_fractal` Function
+
+The `draw_fractal` function iterates over the pixels on the window and applies the corresponding fractal function (Mandelbrot, Julia, or Burning Ship). It calculates which color to apply based on whether the fractal's mathematical sequence converges or diverges.
+
+## Mandelbrot Set Calculation: `calculate_mandelbrot`
+
+```c
+void calculate_mandelbrot(t_fractal *fractal)
+```
+Set initial variables for the Mandelbrot set. `z` starts at 0 (the beginning of the sequence), and `c` represents the pixel coordinates.  
+For performance, use the faster `x * x` instead of `pow(x, 2)`.  
+Iterate through the sequence until:
+- The absolute value of `z` exceeds a threshold, meaning the sequence diverges.
+- The number of iterations exceeds a limit, indicating the sequence may be trapped in a loop.
+
+If the sequence diverges, color the pixel white. If it converges, color the pixel black.
+
+## Julia Set Calculation: `calculate_julia`
+
+This is similar to the Mandelbrot set, but instead of using pixel-based constants, it uses predefined values for `c`. A common example is:
+
+- Real part: `-0.745429`
+- Imaginary part: `0.05`
+
+## Burning Ship Set Calculation: `calculate_burning_ship`
+
+```c
+void calculate_burning_ship(t_fractal *fractal)
+```
+This is another variation of the Mandelbrot set but uses the absolute value of the complex number at each step:
+
+```c
+z_n+1 = abs(z_n)^2 + c
+```
+## Color Visualization
+
+If the sequence diverges, we assign a color to the pixel, adjusting its intensity based on the number of iterations. This technique helps highlight the depth of the fractal and makes it visually more engaging.
+
+For psychedelic effects, multiplying the color by the number of iterations can create unique results, especially using vibrant hues like #FCBE11.
+
+Fun Fact:
+For a more visually striking output, consider using the British Standard subtitle color #FCBE11, which creates an impressive psychedelic effect when multiplied by the iteration count.
+
 
 ## Sources e approfondimenti
 
