@@ -27,6 +27,8 @@ Imagine you have a drawing of a tree. At the end of those big branches there are
 A fractal is like that tree: the same pattern keeps showing up, no matter how close or far away you look.
 
 Or, said it better, fractals are infinitely complex patterns that are self-similar across different scales. They are created by repeating a simple process over and over in an ongoing feedback loop. Fractals are found in nature, mathematics, and computer graphics.
+![fractals_tree_shutterstock](https://github.com/user-attachments/assets/0a2f20b7-c244-4c7a-83b2-b230e04db566)
+
 
 ## The math of fractals
 
@@ -79,3 +81,4 @@ When plotted, the Mandelbrot set creates a **beautiful, complex shape** in the c
 
 - Video di Oceano sul progetto: 
 - Questa repo su github: https://github.com/leogaudin/fract-ol
+- Le prime due foto provengono dal sito dell'Universita dell'Oregon.
