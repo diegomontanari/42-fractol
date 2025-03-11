@@ -1,6 +1,5 @@
 # Computer Graphics Fractals - Fract-ol 🌀
-![nature_fractals_shutterstock](https://github.com/user-attachments/assets/b9ceda60-5785-4810-b3e4-024e587c36e7)
-
+![frattale](https://github.com/user-attachments/assets/7517bd1e-7847-4c83-a1d3-085f87b9a986)
 
 ## Introduction
 Fract-ol is a project from the 42 school that aims to explore and visualize fractals using the MiniLibX graphics library. This project will help you understand the basics of graphical programming and introduce you to the beautiful world of fractals.
