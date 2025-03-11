@@ -80,4 +80,4 @@ When plotted, the Mandelbrot set creates a **beautiful, complex shape** in the c
 
 - Video di Oceano sul progetto: 
 - Questa repo su github: https://github.com/leogaudin/fract-ol
-- Le prime due foto provengono dal sito dell'Universita dell'Oregon.
+- Provenienza delle immagini: sito Universita dell'Oregon e theconversation.com
