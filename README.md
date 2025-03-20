@@ -97,7 +97,12 @@ To generate fractals like Mandelbrot, Julia, or Burning Ship, we'll be using the
 ## Key Steps
 
 ### 1. Setup MiniLibX Library
-Follow the resources available to set up the MiniLibX library on your project.
+libX is a collection of libraries that are part of the X Window System, which provides the graphical environment for Unix-based operating systems. These libraries allow applications to create and manage windows, handle events, and render graphics on the screen. However, libX is complex and requires a deep understanding of the X11 system to use effectively.
+
+To simplify graphical programming for students, 42 created MiniLibX. MiniLibX is a lightweight, minimalistic graphics library that abstracts many complexities of libX, making it easier to create windows, draw shapes, and handle basic events. It is specifically designed for educational purposes, allowing students to focus on learning fundamental programming concepts without getting lost in low-level graphical system details.
+
+You can find the MiniLibX repository on GitHub.
+
 
 ### 2. Create Window and Image
 Utilize the MiniLibX functions to set up a window and an image to display your fractals.
