@@ -174,8 +174,41 @@ For a more visually striking output, consider using the British Standard subtitl
 ### How to access an element of a struct:
 
 - If you have a **variable** of type `struct`, you use the **dot** operator (`.`) to access its members.
-- If you have a **pointer** to a `struct`, you use the **arrow** operator (`->`) to access its members.
+```c
+#include <stdio.h>
 
+typedef struct {
+    int x;
+    int y;
+} Point;
+
+int main() {
+    Point p1 = {10, 20}; // Declare and initialize a struct variable
+
+    // Access struct members using the dot operator
+    printf("p1.x = %d, p1.y = %d\n", p1.x, p1.y);
+
+    return 0;
+}
+```
+- If you have a **pointer** to a `struct`, you use the **arrow** operator (`->`) to access its members.
+#include <stdio.h>
+```c
+typedef struct {
+    int x;
+    int y;
+} Point;
+
+int main() {
+    Point p1 = {10, 20};   // Declare and initialize a struct variable
+    Point *p2 = &p1;       // Declare a pointer to the struct
+
+    // Access struct members using the arrow operator
+    printf("p2->x = %d, p2->y = %d\n", p2->x, p2->y);
+
+    return 0;
+}
+```
 ### What does the arrow operator (`->`) do?
 
 The **arrow** operator (`->`) is used when you have a pointer to a `struct`. It dereferences the pointer and accesses the member of the `struct` directly. It combines the dereference (`*`) and the dot (`.`) operator in one step.
