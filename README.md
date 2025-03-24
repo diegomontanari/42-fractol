@@ -174,6 +174,8 @@ For a more visually striking output, consider using the British Standard subtitl
 ### How to access an element of a struct:
 
 - If you have a **variable** of type `struct`, you use the **dot** operator (`.`) to access its members.
+- If you have a **pointer** to a `struct`, you use the **arrow** operator (`->`) to access its members.
+### Examples:
 ```c
 #include <stdio.h>
 
@@ -181,7 +183,8 @@ typedef struct {
     int x;
     int y;
 } Point;
-
+- If you have a **pointer** to a `struct`, you use the **arrow** operator (`->`) to access its members.
+#include <stdio.h>
 int main() {
     Point p1 = {10, 20}; // Declare and initialize a struct variable
 
@@ -191,9 +194,8 @@ int main() {
     return 0;
 }
 ```
-- If you have a **pointer** to a `struct`, you use the **arrow** operator (`->`) to access its members.
-#include <stdio.h>
 ```c
+#include <stdio.h>
 typedef struct {
     int x;
     int y;
