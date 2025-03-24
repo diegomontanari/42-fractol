@@ -163,8 +163,19 @@ Fun Fact:
 For a more visually striking output, consider using the British Standard subtitle color #FCBE11, which creates an impressive psychedelic effect when multiplied by the iteration count.
 
 
+
+
 ## Sources e approfondimenti
 
 - Video di Oceano sul progetto: 
 - Questa repo su github: https://github.com/leogaudin/fract-ol
 - Provenienza delle immagini: sito Universita dell'Oregon e theconversation.com
+
+### How to access an element of a struct:
+
+- If you have a **variable** of type `struct`, you use the **dot** operator (`.`) to access its members.
+- If you have a **pointer** to a `struct`, you use the **arrow** operator (`->`) to access its members.
+
+### What does the arrow operator (`->`) do?
+
+The **arrow** operator (`->`) is used when you have a pointer to a `struct`. It dereferences the pointer and accesses the member of the `struct` directly. It combines the dereference (`*`) and the dot (`.`) operator in one step.
