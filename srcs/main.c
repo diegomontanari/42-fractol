@@ -1,6 +1,25 @@
 #include "../includes/fractol.h"
 
-/* Function that initiates the values of structures */
+/*
+ * Inizializza i valori della struttura t_fractol per preparare il disegno del frattale.
+ *
+ * - Imposta il bordo sinistro del piano complesso (xr) a -2.0 per default.
+ * - Imposta il bordo superiore del piano complesso (yi) a -1.30 per default.
+ * - Se il tipo di frattale è Mandelbrot (type == 2), imposta xr a -2.5 e yi a -1.30.
+ * - Imposta il numero di iterazioni di default a 50.
+ * - Se viene passato un terzo argomento da linea di comando, lo usa per impostare il numero di iterazioni.
+ * - Imposta le costanti cr e ci (usate solo per Julia) a 0 di default.
+ * - Se vengono passati quarto e quinto argomento da linea di comando, li usa per impostare cr e ci.
+ *   Lì usa atof (ASCII to float) per convertire i numeri in virgola mobile.
+ *   Esempi di cosa fa atof:
+ *   atof("3.14") → restituisce 3.14
+ *   atof("-0.5") → restituisce -0.5
+ *   atof("123.456") → restituisce 123.456
+ *   atof("42") → restituisce 42.0
+ * - Imposta lo zoom (scale) iniziale a 300.00.
+ * - Imposta il colore iniziale (r, g, b) rispettivamente a 0x42, 0x32, 0x22.
+ * - Imposta le coordinate height e width a 0 per iniziare il disegno dall'angolo in alto a sinistra.
+ */
 void	ft_init(t_fractol *fractol, char **av)
 {
 	fractol->fractal.xr = -2.0;
@@ -49,6 +68,15 @@ void	menu(void)
 }
 
 /* Function that changes the type of fractal according to the chosen argument */
+/*
+ * Analizza il primo argomento passato da linea di comando (av[1]) e imposta il tipo di frattale da generare.
+ *
+ * - Se av[1] == "1", imposta fractol->fractal.type = 1 (Julia).
+ * - Se av[1] == "2", imposta fractol->fractal.type = 2 (Mandelbrot).
+ * - Se av[1] == "3", imposta fractol->fractal.type = 3 (Rabbit).
+ * - Se av[1] == "4", imposta fractol->fractal.type = 4 (Monster).
+ * - Se il valore non è valido, stampa un messaggio di errore, mostra il menu e termina il programma.
+ */
 void	fractal_choice(t_fractol *fractol, char **av)
 {
 	if (av[1][0] == '1' && av[1][1] == '\0')
@@ -67,9 +95,31 @@ void	fractal_choice(t_fractol *fractol, char **av)
 	}
 }
 
-/* Function which generates the image of the minilibx, gives it the address
- and calls the other functions in a loop. Refer to the menu if there is an
-  error. */
+/*
+ * Funzione principale del programma Fractol.
+ *
+ * - Definisce la struttura principale che conterrà tutti i dati del programma.
+ * - Controlla che sia stato passato almeno un argomento da linea di comando.
+ * - Sceglie il tipo di frattale in base all'argomento (Julia, Mandelbrot, ecc.) tramite fractal_choice.
+ * - Inizializza la connessione con la libreria grafica MiniLibX (mlx_init).
+ * - Crea una nuova finestra grafica di dimensioni WIDTH x HEIGHT (mlx_new_window).
+ * - Crea una nuova immagine (buffer) dove verrà disegnato il frattale (mlx_new_image).
+ * - Ottiene il puntatore all'area di memoria dell'immagine e informazioni tecniche (mlx_get_data_addr).
+ *   Le informazioni tecniche sono:
+ *   bits_per_pixel: quanti bit occupa ogni pixel nell’immagine (es. 32 = 4 byte per pixel: RGBA).
+line_length: quanti byte occupa ogni riga di pixel in memoria (può essere maggiore della larghezza in pixel × byte, per motivi di allineamento).
+endian: indica l’ordine dei byte nei pixel (big endian o little endian).
+Questi valori sono fondamentali per sapere come scrivere correttamente i colori
+ dei pixel direttamente in memoria.
+* 
+ * - Inizializza i parametri del frattale (zoom, iterazioni, costanti, colori) con ft_init.
+ * - Disegna il frattale sull'immagine con ft_draw.
+ * - Imposta la funzione di gestione degli input da tastiera (mlx_key_hook).
+ * - Imposta la funzione di gestione degli input da mouse (mlx_mouse_hook).
+ * - Avvia il loop principale della libreria grafica (mlx_loop).
+ * - Se manca l'argomento, stampa errore e mostra il menu di utilizzo.
+ * - Termina il programma restituendo 0.
+ */
 int	main(int argc, char **argv)
 {
 	t_fractol	f;

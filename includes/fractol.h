@@ -74,6 +74,7 @@ int		main(int argc, char **argv);
 void	menu(void);
 void	ft_init(t_fractol *fractol, char **av);
 void	fractal_choice(t_fractol *fractol, char **av);
+double	ft_atof(const char *str);
 
 /* Types of fractal */
 int		julia(t_fractol *fractol);
