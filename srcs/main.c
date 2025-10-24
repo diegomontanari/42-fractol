@@ -45,6 +45,7 @@ void	ft_init(t_fractol *fractol, char **av)
 	fractol->color.b = 0x22;
 	fractol->fractal.height = 0;
 	fractol->fractal.width = 0;
+	fractol->last_zoom_time = 0;
 }
 
 /* Menu */
@@ -136,6 +137,7 @@ int	main(int argc, char **argv)
 		ft_draw(&f);
 		mlx_key_hook(f.mlx.win, key, &f);
 		mlx_mouse_hook(f.mlx.win, mouse, &f);
+		mlx_hook(f.mlx.win, 17, 0, close_window, &f);
 		mlx_loop(f.mlx.mlx);
 	}
 	else

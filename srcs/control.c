@@ -144,12 +144,40 @@ void	zoom_out(int x, int y, t_fractol *f)
 /* Function which takes the inputs of the mouse */
 int	mouse(int mouse, int x, int y, t_fractol *fractol)
 {
+	struct timeval	tv;
+	long			current_time;
+	int				throttle_ms;
+	
+	gettimeofday(&tv, NULL);
+	current_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+	
+	/* Dynamic throttling based on zoom level */
+	throttle_ms = 50;  /* Default throttle */
+	if (fractol->fractal.scale > 10000)
+		throttle_ms = 100;  /* Slower throttle for high zoom */
+	
+	if (current_time - fractol->last_zoom_time < throttle_ms)
+		return (0);
+	
 	if (mouse == DOWN_SCROLL)
 		zoom_in(x, y, fractol);
 	if (mouse == UP_SCROLL)
 		zoom_out(x, y, fractol);
+	
+	fractol->last_zoom_time = current_time;
 	fractol->fractal.height = 0;
 	fractol->fractal.width = 0;
 	ft_draw(fractol);
+	return (0);
+}
+
+/* Function to handle window close event (X button) */
+int	close_window(t_fractol *fractol)
+{
+	mlx_destroy_window(fractol->mlx.mlx, fractol->mlx.win);
+	mlx_destroy_image(fractol->mlx.mlx, fractol->mlx.img);
+	mlx_destroy_display(fractol->mlx.mlx);
+	free(fractol->mlx.mlx);
+	exit(0);
 	return (0);
 }

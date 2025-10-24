@@ -6,6 +6,7 @@
 # include <math.h>
 # include <stdio.h>
 # include <unistd.h>
+# include <sys/time.h>
 # include "../libft/libft.h"
 
 # define WIDTH 			1200
@@ -14,17 +15,17 @@
 # define SCALE_PRS		1.3
 # define SCALE_ITER		3
 
-# define ESC 			53
-# define SPACE_KEY 		49
-# define W_KEY			13
-# define A_KEY			0
-# define S_KEY			1
-# define D_KEY			2
+# define ESC 			65307
+# define SPACE_KEY 		32
+# define W_KEY			119
+# define A_KEY			97
+# define S_KEY			115
+# define D_KEY			100
 
-# define UP_ARROW		126
-# define LEFT_ARROW		123
-# define DOWN_ARROW		125
-# define RIGHT_ARROW	124
+# define UP_ARROW		65362
+# define LEFT_ARROW		65361
+# define DOWN_ARROW		65364
+# define RIGHT_ARROW	65363
 
 # define UP_SCROLL		0x04
 # define DOWN_SCROLL	0x05
@@ -67,6 +68,7 @@ typedef struct s_fractol
 	t_mlx	mlx;
 	t_color	color;
 	t_type	fractal;
+	long	last_zoom_time;
 }				t_fractol;
 
 /* Main functions */
@@ -93,5 +95,6 @@ int		key(int key, t_fractol *fractol);
 void	zoom_in(int x, int y, t_fractol *f);
 void	zoom_out(int x, int y, t_fractol *f);
 int		mouse(int mouse, int x, int y, t_fractol *fractol);
+int		close_window(t_fractol *fractol);
 
 #endif

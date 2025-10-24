@@ -58,7 +58,7 @@ int	ft_draw(t_fractol *f)
 	double	tmp_width;
 
 	tmp_width = f->fractal.width;
-	while (f->fractal.height < WIDTH)
+	while (f->fractal.height < HEIGHT)
 	{
 		f->fractal.width = tmp_width;
 		while (f->fractal.width < WIDTH)
