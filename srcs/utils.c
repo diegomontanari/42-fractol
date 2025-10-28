@@ -13,70 +13,71 @@
 #include "../includes/fractol.h"
 
 /*
- * Converts a string to a double (ASCII to float)
- * 
- * This function converts a string representation of a floating-point number
- * to its double equivalent. It handles:
- * - Positive and negative numbers
- * - Decimal points
- * - Leading and trailing whitespace
- * - Invalid characters (stops parsing at first invalid char)
- * 
- * Parameters:
- * - str: pointer to the string to convert
- * 
- * Returns:
- * - double: the converted floating-point number
- * - 0.0: if the string is invalid or empty
- * 
- * Examples:
- * - ft_atof("3.14") returns 3.14
- * - ft_atof("-0.5") returns -0.5
- * - ft_atof("123.456") returns 123.456
- * - ft_atof("42") returns 42.0
- * - ft_atof("invalid") returns 0.0
+ * Converte una stringa in un double (ASCII a float).
+ * Il primo while gestisce la parte intera e il secondo la parte decimale.
+ *
+ * Parametri:
+ * - str: puntatore alla stringa da convertire
+ *
+ * Restituisce:
+ * - double: il numero convertito
+ * - 0.0: se la stringa è invalida o vuota
  */
+static double	parse_integer(const char *str, int *i)
+{
+	double	result;
+
+	result = 0.0;
+	while (str[*i] >= '0' && str[*i] <= '9')
+	{
+		result = result * 10.0 + (str[*i] - '0');
+		(*i)++;
+	}
+	return (result);
+}
+
+static double	parse_decimal(const char *str, int *i)
+{
+	double	result;
+	double	power;
+
+	result = 0.0;
+	power = 1.0;
+	if (str[*i] == '.')
+	{
+		(*i)++;
+		while (str[*i] >= '0' && str[*i] <= '9')
+		{
+			result = result * 10.0 + (str[*i] - '0');
+			power *= 10.0;
+			(*i)++;
+		}
+		result /= power;
+	}
+	return (result);
+}
+
 double	ft_atof(const char *str)
 {
 	double	result;
 	double	sign;
-	double	power;
 	int		i;
 
-	if (!str)
-		return (0.0);
 	result = 0.0;
 	sign = 1.0;
 	i = 0;
-	// Skip whitespace
-	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' ||
-		   str[i] == '\r' || str[i] == '\f' || str[i] == '\v')
+	if (!str)
+		return (0.0);
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n' || str[i] == '\r'
+		|| str[i] == '\f' || str[i] == '\v')
 		i++;
-	// Handle sign
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
 			sign = -1.0;
 		i++;
 	}
-	// Parse integer part
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		result = result * 10.0 + (str[i] - '0');
-		i++;
-	}
-	// Parse decimal part
-	if (str[i] == '.')
-	{
-		i++;
-		power = 1.0;
-		while (str[i] >= '0' && str[i] <= '9')
-		{
-			result = result * 10.0 + (str[i] - '0');
-			power *= 10.0;
-			i++;
-		}
-		result /= power;
-	}
+	result = parse_integer(str, &i);
+	result += parse_decimal(str, &i);
 	return (sign * result);
 }
