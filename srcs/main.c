@@ -1,3 +1,4 @@
+#include <signal.h>
 #include "../includes/fractol.h"
 
 /*
@@ -22,12 +23,12 @@
  */
 void	ft_init(t_fractol *fractol, char **av)
 {
-	fractol->fractal.xr = -2.0;
-	fractol->fractal.yi = -1.30;
+	fractol->fractal.offset_x = -2.0;
+	fractol->fractal.offset_y = -1.30;
 	if (fractol->fractal.type == 2)
 	{
-		fractol->fractal.xr = -2.5;
-		fractol->fractal.yi = -1.30;
+		fractol->fractal.offset_x = -2.5;
+		fractol->fractal.offset_y = -1.30;
 	}
 	fractol->fractal.iteration = 50;
 	if (av[2])
@@ -43,8 +44,8 @@ void	ft_init(t_fractol *fractol, char **av)
 	fractol->color.r = 0x42;
 	fractol->color.g = 0x32;
 	fractol->color.b = 0x22;
-	fractol->fractal.height = 0;
-	fractol->fractal.width = 0;
+	fractol->fractal.pixel_y = 0;
+	fractol->fractal.pixel_x = 0;
 	fractol->last_zoom_time = 0;
 }
 
