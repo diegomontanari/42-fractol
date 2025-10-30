@@ -115,12 +115,17 @@ Questi valori sono fondamentali per sapere come scrivere correttamente i colori
 * 
  * - Inizializza i parametri del frattale (zoom, iterazioni, costanti, colori) con ft_init.
  * - Disegna il frattale sull'immagine con ft_draw.
- * - Imposta la funzione di gestione degli input da tastiera (mlx_key_hook).
- * - Imposta la funzione di gestione degli input da mouse (mlx_mouse_hook).
- * - Avvia il loop principale della libreria grafica (mlx_loop).
+ * - mlx_key_hook: permette di gestire gli eventi della tastiera. Ad esempio, se premi 
+ *   un tasto, la funzione key viene chiamata, e passano i parametri necessari.
+ * - mlx_mouse_hook: gestisce gli eventi del mouse (clic, movimento, ecc.). Qui la funzione mouse viene chiamata.
+ * - mlx_hook: gestisce altri eventi generali, come la chiusura della finestra. 
+ *   Il numero 17 è un codice per l'evento di chiusura della finestra (quando clicchi sulla "X" per chiudere la finestra).
+ * - mlx_llop: mantiene il programma in esecuzione fino a quando la finestra non viene chiusa. 
+ *   Senza questa riga, la finestra si chiuderebbe subito dopo l'apertura, perché il programma terminerebbe.
  * - Se manca l'argomento, stampa errore e mostra il menu di utilizzo.
  * - Termina il programma restituendo 0.
  */
+
 int	main(int argc, char **argv)
 {
 	t_fractol	f;
