@@ -25,11 +25,11 @@ LIBFT = $(LIBFTDIR)/libft.a
 MLX = $(MLXDIR)/libmlx.a
 
 # Default target
-all: $(NAME)
+all: $(LIBFT) $(MLX) $(NAME)
 
 # Build the main executable
-$(NAME): $(LIBFT) $(MLX) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -L$(LIBFTDIR) -lft -L$(MLXDIR) -lmlx -lXext -lX11 -lm -lbsd -o $@
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $^ -L$(LIBFTDIR) -lft -L$(MLXDIR) -lmlx -lXext -lX11 -lm -lbsd -o $@
 
 # Build libft library
 $(LIBFT):
