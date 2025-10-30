@@ -86,59 +86,71 @@
 int	key(int key, t_fractol *fractol)
 {
 	if (key == ESC)
-		exit(0);
+		clean_exit(fractol, 0);
 	else if (key == SPACE_KEY)
 		random_colors(fractol);
 	else if (key == W_KEY || key == UP_ARROW)
-		fractol->fractal.yi -= 10 / fractol->fractal.scale;
+		fractol->fractal.offset_y += 10 / fractol->fractal.scale;  // Move up
 	else if (key == A_KEY || key == LEFT_ARROW)
-		fractol->fractal.xr -= 10 / fractol->fractal.scale;
+		fractol->fractal.offset_x -= 10 / fractol->fractal.scale;  // Move left
 	else if (key == S_KEY || key == DOWN_ARROW)
-		fractol->fractal.yi += 10 / fractol->fractal.scale;
+		fractol->fractal.offset_y -= 10 / fractol->fractal.scale;  // Move down
 	else if (key == D_KEY || key == RIGHT_ARROW)
-		fractol->fractal.xr += 10 / fractol->fractal.scale;
-	fractol->fractal.height = 0;
-	fractol->fractal.width = 0;
+		fractol->fractal.offset_x += 10 / fractol->fractal.scale;  // Move right
+	
+	// Reset rendering coordinates and redraw
+	fractol->fractal.pixel_x = 0;
+	fractol->fractal.pixel_y = 0;
 	ft_draw(fractol);
 	return (0);
 }
 
-/* Function that zooms in by increasing the scale, the iteration and adding
- to the x and y the values of scale_multi */
+/* Function that zooms in by increasing the scale and keeping the mouse position fixed */
+// 1. (double mouse_x) Save current mouse position in complex plane
+// 2. Update the scale
+// 3. Calculate new offsets to keep the mouse position fixed
+// 4. Increase iterations for more detail
 void	zoom_in(int x, int y, t_fractol *f)
 {
-	double	scale_multi;
+    if (f->fractal.scale >= SCALE_LIMIT)
+        return;
 
-	if (f->fractal.scale >= SCALE_LIMIT)
-		return ;
-	else
-	{
-		scale_multi = f->fractal.scale * SCALE_PRS;
-		f->fractal.xr = ((double)x / f->fractal.scale + f->fractal.xr) \
-		 - (scale_multi / 2);
-		f->fractal.xr += (scale_multi / 2) - ((double)x / scale_multi);
-		f->fractal.yi = ((double)y / f->fractal.scale + f->fractal.yi) \
-		 - (scale_multi / 2);
-		f->fractal.yi += (scale_multi / 2) - ((double)y / scale_multi);
-		f->fractal.scale *= SCALE_PRS;
-		f->fractal.iteration += SCALE_ITER;
-	}
+    double mouse_x = (double)x / f->fractal.scale + f->fractal.offset_x;
+    double mouse_y = (double)y / f->fractal.scale + f->fractal.offset_y;
+
+    f->fractal.scale *= SCALE_PRS;
+    
+    f->fractal.offset_x = mouse_x - ((double)x / f->fractal.scale);
+    f->fractal.offset_y = mouse_y - ((double)y / f->fractal.scale);
+    
+    f->fractal.iteration += SCALE_ITER;
 }
 
-/* Same but in the other way */
-void	zoom_out(int x, int y, t_fractol *f)
+/* Zoom out from the current mouse position */
+// 1. Save current mouse position in complex plane
+// 2. Update the scale (decrease it)
+// 3. Calculate new offsets to keep the mouse position fixed
+// 4. Decrease iterations for better performance
+void zoom_out(int x, int y, t_fractol *f)
 {
-	double	scale_multi;
+    if (f->fractal.scale <= 1.0)  // Prevent zooming out too much
+        return;
 
-	scale_multi = f->fractal.scale / SCALE_PRS;
-	f->fractal.xr = ((double)x / f->fractal.scale + f->fractal.xr) \
-	 - (scale_multi / 2);
-	f->fractal.xr += (scale_multi / 2) - ((double)x / scale_multi);
-	f->fractal.yi = ((double)y / f->fractal.scale + f->fractal.yi) \
-	 - (scale_multi / 2);
-	f->fractal.yi += (scale_multi / 2) - ((double)y / scale_multi);
-	f->fractal.scale /= SCALE_PRS;
-	f->fractal.iteration -= SCALE_ITER;
+    // 1. Save current mouse position in complex plane
+    double mouse_x = (double)x / f->fractal.scale + f->fractal.offset_x;
+    double mouse_y = (double)y / f->fractal.scale + f->fractal.offset_y;
+
+    // 2. Update the scale (decrease it)
+    f->fractal.scale /= SCALE_PRS;
+    
+    // 3. Calculate new offsets to keep the mouse position fixed
+    f->fractal.offset_x = mouse_x - ((double)x / f->fractal.scale);
+    f->fractal.offset_y = mouse_y - ((double)y / f->fractal.scale);
+    
+    // 4. Decrease iterations for better performance
+    if (f->fractal.iteration > 50) {  // Keep a minimum iteration count
+        f->fractal.iteration -= SCALE_ITER;
+    }
 }
 
 /* Function which takes the inputs of the mouse */
@@ -171,13 +183,46 @@ int	mouse(int mouse, int x, int y, t_fractol *fractol)
 	return (0);
 }
 
-/* Function to handle window close event (X button) */
+/**
+ * @brief Clean up MLX resources and exit the program
+ * 
+ * @param f Pointer to the fractol structure (can be NULL)
+ * @param exit_code The exit code to return
+ */
+void	clean_exit(t_fractol *f, int exit_code)
+{
+	if (f)
+	{
+		if (f->mlx.img && f->mlx.mlx)
+			mlx_destroy_image(f->mlx.mlx, f->mlx.img);
+		if (f->mlx.win && f->mlx.mlx)
+			mlx_destroy_window(f->mlx.mlx, f->mlx.win);
+		if (f->mlx.mlx)
+		{
+			mlx_destroy_display(f->mlx.mlx);
+			free(f->mlx.mlx);
+		}
+	}
+	exit(exit_code);
+}
+
+/**
+ * @brief Handle signals (like Ctrl+C) to ensure clean exit
+ * 
+ * @param sig Signal number
+ */
+void	handle_signal(int sig)
+{
+	(void)sig;
+	ft_putstr_fd("\n\033[33mProgram terminated by user\e[0m\n", 2);
+	exit(0);
+}
+
+/**
+ * @brief Handle window close event (X button)
+ */
 int	close_window(t_fractol *fractol)
 {
-	mlx_destroy_window(fractol->mlx.mlx, fractol->mlx.win);
-	mlx_destroy_image(fractol->mlx.mlx, fractol->mlx.img);
-	mlx_destroy_display(fractol->mlx.mlx);
-	free(fractol->mlx.mlx);
-	exit(0);
+	clean_exit(fractol, 0);
 	return (0);
 }

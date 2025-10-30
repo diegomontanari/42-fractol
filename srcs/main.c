@@ -72,13 +72,11 @@ void	menu(void)
 /*
  * Analizza il primo argomento passato da linea di comando (av[1]) e imposta il tipo di frattale da generare.
  *
- * - Se av[1] == "1", imposta fractol->fractal.type = 1 (Julia).
- * - Se av[1] == "2", imposta fractol->fractal.type = 2 (Mandelbrot).
- * - Se av[1] == "3", imposta fractol->fractal.type = 3 (Rabbit).
- * - Se av[1] == "4", imposta fractol->fractal.type = 4 (Monster).
- * - Se il valore non è valido, stampa un messaggio di errore, mostra il menu e termina il programma.
+ * @param fractol Puntatore alla struttura t_fractol
+ * @param av Argomenti della riga di comando
+ * @return 0 in caso di successo, 1 in caso di errore
  */
-void	fractal_choice(t_fractol *fractol, char **av)
+int	fractal_choice(t_fractol *fractol, char **av)
 {
 	if (av[1][0] == '1' && av[1][1] == '\0')
 		fractol->fractal.type = 1;
@@ -90,10 +88,13 @@ void	fractal_choice(t_fractol *fractol, char **av)
 		fractol->fractal.type = 4;
 	else
 	{
-		printf("\n\033[31mERROR : %s is not a valid argument\e[0m\n\n", av[1]);
+		ft_putstr_fd("\n\033[31mError: '", 2);
+		ft_putstr_fd(av[1], 2);
+		ft_putstr_fd("' is not a valid argument\e[0m\n\n", 2);
 		menu();
-		exit(0);
+		return (1);
 	}
+	return (0);
 }
 
 /*
@@ -126,29 +127,85 @@ Questi valori sono fondamentali per sapere come scrivere correttamente i colori
  * - Termina il programma restituendo 0.
  */
 
+/**
+ * Initialize MLX, create window and image
+ * 
+ * @param f Pointer to the fractol structure
+ * @return 0 on success, 1 on error
+ */
+static int init_mlx(t_fractol *f)
+{
+	// Initialize MLX
+	f->mlx.mlx = mlx_init();
+	if (!f->mlx.mlx)
+	{
+		ft_putstr_fd("Error: Failed to initialize MLX\n", 2);
+		return (1);
+	}
+
+	// Create window
+	f->mlx.win = mlx_new_window(f->mlx.mlx, WIDTH, HEIGHT, "Fractol");
+	if (!f->mlx.win)
+	{
+		ft_putstr_fd("Error: Failed to create window\n", 2);
+		return (1);
+	}
+
+	// Create image
+	f->mlx.img = mlx_new_image(f->mlx.mlx, WIDTH, HEIGHT);
+	if (!f->mlx.img)
+	{
+		ft_putstr_fd("Error: Failed to create image\n", 2);
+		return (1);
+	}
+
+	// Get image data address
+	f->mlx.addr = mlx_get_data_addr(f->mlx.img, &f->mlx.bits_per_pixel,
+			&f->mlx.line_length, &f->mlx.endian);
+	if (!f->mlx.addr)
+	{
+		ft_putstr_fd("Error: Failed to get image data address\n", 2);
+		return (1);
+	}
+
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_fractol	f;
 
-	if (argc >= 2)
+	// Check command line arguments
+	if (argc < 2)
 	{
-		fractal_choice(&f, argv);
-		f.mlx.mlx = mlx_init();
-		f.mlx.win = mlx_new_window(f.mlx.mlx, WIDTH, HEIGHT, "Fractol");
-		f.mlx.img = mlx_new_image(f.mlx.mlx, WIDTH, HEIGHT);
-		f.mlx.addr = mlx_get_data_addr(f.mlx.img, &f.mlx.bits_per_pixel,
-				&f.mlx.line_length, &f.mlx.endian);
-		ft_init(&f, argv);
-		ft_draw(&f);
-		mlx_key_hook(f.mlx.win, key, &f);
-		mlx_mouse_hook(f.mlx.win, mouse, &f);
-		mlx_hook(f.mlx.win, 17, 0, close_window, &f);
-		mlx_loop(f.mlx.mlx);
-	}
-	else
-	{
-		printf("\n\033[31mERROR : Missing argument\e[0m\n\n");
+		ft_putstr_fd("\n\033[31mError: Missing argument\e[0m\n\n", 2);
 		menu();
+		return (1);
 	}
+
+	// Initialize fractal type
+	if (fractal_choice(&f, argv) != 0)
+		return (1);
+
+	// Setup signal handler for Ctrl+C
+	signal(SIGINT, handle_signal);
+
+	// Initialize MLX, window, and image with error handling
+	if (init_mlx(&f) != 0)
+		clean_exit(&f, 1);
+
+	// Initialize fractal parameters
+	ft_init(&f, argv);
+
+	// Set up event hooks
+	mlx_key_hook(f.mlx.win, key, &f);
+	mlx_mouse_hook(f.mlx.win, mouse, &f);
+	mlx_hook(f.mlx.win, 17, 0, close_window, &f);
+
+	// Draw the fractal and start the event loop
+	ft_draw(&f);
+	mlx_loop(f.mlx.mlx);
+
+	// This line is theoretically unreachable due to mlx_loop
 	return (0);
 }

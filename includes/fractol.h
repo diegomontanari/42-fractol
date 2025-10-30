@@ -42,13 +42,13 @@ typedef struct s_type
 	int		type;
 	int		depth;
 	int		iteration;
-	double	width;
-	double	height;
-	double	scale;
-	double	xr;
-	double	yi;
-	double	cr;
-	double	ci;
+	double	pixel_x;    // Current pixel x position (was: width)
+	double	pixel_y;    // Current pixel y position (was: height)
+	double	scale;      // Zoom scale factor
+	double	offset_x;   // X offset in complex plane (was: xr)
+	double	offset_y;   // Y offset in complex plane (was: yi)
+	double	cr;         // Real part of constant (for Julia set)
+	double	ci;         // Imaginary part of constant (for Julia set)
 }				t_type;
 
 typedef struct s_mlx
@@ -75,7 +75,7 @@ typedef struct s_fractol
 int		main(int argc, char **argv);
 void	menu(void);
 void	ft_init(t_fractol *fractol, char **av);
-void	fractal_choice(t_fractol *fractol, char **av);
+int		fractal_choice(t_fractol *fractol, char **av);
 double	ft_atof(const char *str);
 
 /* Types of fractal */
@@ -96,5 +96,7 @@ void	zoom_in(int x, int y, t_fractol *f);
 void	zoom_out(int x, int y, t_fractol *f);
 int		mouse(int mouse, int x, int y, t_fractol *fractol);
 int		close_window(t_fractol *fractol);
+void	clean_exit(t_fractol *f, int exit_code);
+void	handle_signal(int sig);
 
 #endif
