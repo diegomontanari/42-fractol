@@ -177,8 +177,8 @@ int	mouse(int mouse, int x, int y, t_fractol *fractol)
 		zoom_out(x, y, fractol);
 	
 	fractol->last_zoom_time = current_time;
-	fractol->fractal.height = 0;
-	fractol->fractal.width = 0;
+	fractol->fractal.pixel_y = 0;
+	fractol->fractal.pixel_x = 0;
 	ft_draw(fractol);
 	return (0);
 }

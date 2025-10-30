@@ -62,8 +62,8 @@ int	julia(t_fractol *fractol)
 	double	tmp_zr;
 
 	fractol->fractal.depth = 0;
-	zi = fractol->fractal.width / fractol->fractal.scale + fractol->fractal.yi;
-	zr = fractol->fractal.height / fractol->fractal.scale + fractol->fractal.xr;
+	zi = fractol->fractal.pixel_y / fractol->fractal.scale + fractol->fractal.offset_y;
+	zr = fractol->fractal.pixel_x / fractol->fractal.scale + fractol->fractal.offset_x;
 	cr = -0.8;
 	ci = 0.156;
 	if (fractol->fractal.ci != 0)
@@ -90,7 +90,7 @@ int	julia(t_fractol *fractol)
 *
 * La differenza principale con Julia è che:
 * - In Julia: z varia, c è costante (parametro dell'utente)
-* - In Mandelbrot: z inizia da 0, c è la posizione del pixel
+* - In Mandelbrot: z inizia da 0, c varia (posizione del pixel)
 *
 * La funzione calcola quante iterazioni servono prima che il punto
 * "sfugga" (diventi maggiore di 2 in modulo) o raggiunga il limite
@@ -206,8 +206,8 @@ int	mandelbrot(t_fractol *fractol)
 	fractol->fractal.depth = 0;
 	zr = 0;
 	zi = 0;
-	ci = fractol->fractal.width / fractol->fractal.scale + fractol->fractal.yi;
-	cr = fractol->fractal.height / fractol->fractal.scale + fractol->fractal.xr;
+	ci = fractol->fractal.pixel_y / fractol->fractal.scale + fractol->fractal.offset_y;
+	cr = fractol->fractal.pixel_x / fractol->fractal.scale + fractol->fractal.offset_x;
 	while ((zr * zr) + (zi * zi) < 4
 		&& fractol->fractal.depth < fractol->fractal.iteration)
 	{
@@ -301,8 +301,8 @@ int	rabbit(t_fractol *fractol)
 	double	tmp_zr;
 
 	fractol->fractal.depth = 0;
-	zi = fractol->fractal.width / fractol->fractal.scale + fractol->fractal.yi;
-	zr = fractol->fractal.height / fractol->fractal.scale + fractol->fractal.xr;
+	zi = fractol->fractal.pixel_y / fractol->fractal.scale + fractol->fractal.offset_y;
+	zr = fractol->fractal.pixel_x / fractol->fractal.scale + fractol->fractal.offset_x;
 	cr = -0.0123;
 	ci = 0.745;
 	if (fractol->fractal.ci != 0)
@@ -320,6 +320,7 @@ int	rabbit(t_fractol *fractol)
 	}
 	return (fractol->fractal.depth);
 }
+
 /*
 * FUNZIONE MONSTER - Calcola il frattale "Monster" per un singolo pixel
 *
@@ -329,7 +330,7 @@ int	rabbit(t_fractol *fractol)
 * ma con una modifica importante: c viene sempre reso positivo (valore assoluto).
 *
 * La funzione calcola quante iterazioni servono prima che il punto
-* "sfugge" (diventi maggiore di 2 in modulo) o raggiunga il limite
+* "sfugga" (diventi maggiore di 2 in modulo) o raggiunga il limite
 * massimo di iterazioni. Questo numero determina il colore del pixel.
 *
 * PARAMETRI:
@@ -413,8 +414,8 @@ int	monster(t_fractol *fractol)
 	fractol->fractal.depth = 0;
 	zr = 0;
 	zi = 0;
-	ci = fractol->fractal.width / fractol->fractal.scale + fractol->fractal.yi;
-	cr = fractol->fractal.height / fractol->fractal.scale + fractol->fractal.xr;
+	ci = fractol->fractal.pixel_y / fractol->fractal.scale + fractol->fractal.offset_y;
+	cr = fractol->fractal.pixel_x / fractol->fractal.scale + fractol->fractal.offset_x;
 	if (ci < 0)
 		ci = -ci;
 	if (cr < 0)

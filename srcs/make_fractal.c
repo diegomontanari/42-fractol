@@ -41,8 +41,8 @@ void	put_pixel(t_fractol *fractol, int depth)
 	int	x;
 	int	y;
 
-	x = (int)fractol->fractal.width;
-	y = (int)fractol->fractal.height;
+	x = (int)fractol->fractal.pixel_x;
+	y = (int)fractol->fractal.pixel_y;
 	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
 		return ;
 	if (depth == fractol->fractal.iteration)
@@ -92,8 +92,8 @@ int	ft_draw(t_fractol *f)
 		x = 0;
 		while (x < WIDTH)
 		{
-			f->fractal.width = (double)x;
-			f->fractal.height = (double)y;
+			f->fractal.pixel_x = (double)x;
+			f->fractal.pixel_y = (double)y;
 			if (f->fractal.type == 1)
 				depth = julia(f);
 			else if (f->fractal.type == 2)
