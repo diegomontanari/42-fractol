@@ -136,7 +136,6 @@ Questi valori sono fondamentali per sapere come scrivere correttamente i colori
  */
 static int init_mlx(t_fractol *f)
 {
-	// Initialize MLX
 	f->mlx.mlx = mlx_init();
 	if (!f->mlx.mlx)
 	{
@@ -144,7 +143,6 @@ static int init_mlx(t_fractol *f)
 		return (1);
 	}
 
-	// Create window
 	f->mlx.win = mlx_new_window(f->mlx.mlx, WIDTH, HEIGHT, "Fractol");
 	if (!f->mlx.win)
 	{
@@ -152,15 +150,13 @@ static int init_mlx(t_fractol *f)
 		return (1);
 	}
 
-	// Create image
 	f->mlx.img = mlx_new_image(f->mlx.mlx, WIDTH, HEIGHT);
 	if (!f->mlx.img)
 	{
 		ft_putstr_fd("Error: Failed to create image\n", 2);
 		return (1);
 	}
-
-	// Get image data address
+	
 	f->mlx.addr = mlx_get_data_addr(f->mlx.img, &f->mlx.bits_per_pixel,
 			&f->mlx.line_length, &f->mlx.endian);
 	if (!f->mlx.addr)
@@ -172,11 +168,19 @@ static int init_mlx(t_fractol *f)
 	return (0);
 }
 
+// Check command line arguments
+// Initialize fractal type
+// Setup signal handler for Ctrl+C
+// Initialize MLX, window, and image with error handling
+// Initialize fractal parameters
+// Set up event hooks
+// Draw the fractal and start the event loop
+// This line is theoretically unreachable due to mlx_loop
+
 int	main(int argc, char **argv)
 {
 	t_fractol	f;
 
-	// Check command line arguments
 	if (argc < 2)
 	{
 		ft_putstr_fd("\n\033[31mError: Missing argument\e[0m\n\n", 2);
@@ -184,29 +188,22 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
-	// Initialize fractal type
 	if (fractal_choice(&f, argv) != 0)
 		return (1);
 
-	// Setup signal handler for Ctrl+C
 	signal(SIGINT, handle_signal);
 
-	// Initialize MLX, window, and image with error handling
 	if (init_mlx(&f) != 0)
 		clean_exit(&f, 1);
 
-	// Initialize fractal parameters
 	ft_init(&f, argv);
 
-	// Set up event hooks
 	mlx_key_hook(f.mlx.win, key, &f);
 	mlx_mouse_hook(f.mlx.win, mouse, &f);
 	mlx_hook(f.mlx.win, 17, 0, close_window, &f);
 
-	// Draw the fractal and start the event loop
 	ft_draw(&f);
 	mlx_loop(f.mlx.mlx);
 
-	// This line is theoretically unreachable due to mlx_loop
 	return (0);
 }

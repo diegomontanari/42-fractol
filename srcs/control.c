@@ -154,6 +154,9 @@ void zoom_out(int x, int y, t_fractol *f)
 }
 
 /* Function which takes the inputs of the mouse */
+/* Dynamic throttling based on zoom level */
+/* Default throttle */
+/* Slower throttle for high zoom if scale is greater than 10000*/
 int	mouse(int mouse, int x, int y, t_fractol *fractol)
 {
 	struct timeval	tv;
@@ -163,10 +166,9 @@ int	mouse(int mouse, int x, int y, t_fractol *fractol)
 	gettimeofday(&tv, NULL);
 	current_time = tv.tv_sec * 1000 + tv.tv_usec / 1000;
 	
-	/* Dynamic throttling based on zoom level */
-	throttle_ms = 50;  /* Default throttle */
+	throttle_ms = 50;  
 	if (fractol->fractal.scale > 10000)
-		throttle_ms = 100;  /* Slower throttle for high zoom */
+		throttle_ms = 100; 
 	
 	if (current_time - fractol->last_zoom_time < throttle_ms)
 		return (0);
