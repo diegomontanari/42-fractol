@@ -21,7 +21,7 @@
  * - Imposta il colore iniziale (r, g, b) rispettivamente a 0x42, 0x32, 0x22.
  * - Imposta le coordinate height e width a 0 per iniziare il disegno dall'angolo in alto a sinistra.
  */
-void	ft_init(t_fractol *fractol, char **av)
+void	ft_fractol_init(t_fractol *fractol, char **av)
 {
 	fractol->fractal.offset_x = -2.0;
 	fractol->fractal.offset_y = -1.30;
@@ -99,6 +99,58 @@ int	fractal_choice(t_fractol *fractol, char **av)
 }
 
 /*
+f->mlx.mlx è un puntatore alla connessione MiniLibX. 
+Questa connessione rappresenta il collegamento tra il 
+tuo programma e il server grafico (X11 su Linux), 
+ed è necessaria per creare finestre, immagini, gestire 
+eventi, ecc.
+*/
+
+/*
+f->mlx.win è un puntatore alla finestra grafica. 
+Questa finestra è la finestra grafica che verrà creata 
+e che verrà utilizzata per disegnare il frattale.
+*/
+
+/*
+f->mlx.img è un puntatore all'immagine. 
+Questa immagine è l'immagine che verrà creata 
+e che verrà utilizzata per disegnare il frattale.
+*/
+
+/*
+f->mlx.addr è un puntatore all'area di memoria dell'immagine. 
+Questa area di memoria è l'area di memoria dell'immagine 
+che verrà utilizzata per disegnare il frattale.
+
+Cosa fa questa riga?
+
+f->mlx.addr = mlx_get_data_addr(f->mlx.img, &f->mlx.bits_per_pixel,
+            &f->mlx.line_length, &f->mlx.endian);
+
+			Vediamola campo per campo:
+
+- f->mlx.img	è il puntatore all’immagine creata con mlx_new_image()
+- &f->mlx.bits_per_pixel	MiniLibX scrive qui quanti bit 
+                            servono per ogni pixel (es. 32 bit)
+- &f->mlx.line_length	MiniLibX scrive qui quanti byte occupa 
+						una riga dell’immagine in memoria
+- &f->mlx.endian	MiniLibX scrive qui se l’architettura è 
+					big endian o little endian
+- f->mlx.addr		Puntatore alla memoria dell'immagine.
+					Questo è il puntatore che userai per scrivere 
+					i pixel nell'immagine.
+
+Perché serve?
+Perché MiniLibX ti dà solo un'immagine vuota. Se vuoi disegnare pixel, devi sapere:
+
+Dove scrivere (addr)
+Quanto spazio occupa ogni pixel (bits_per_pixel)
+Come è strutturata la memoria (line_length)
+In che ordine sono i byte (endian)
+*/
+
+/*
  * Funzione principale del programma Fractol.
  *
  * - Definisce la struttura principale che conterrà tutti i dati del programma.
@@ -170,12 +222,31 @@ static int init_mlx(t_fractol *f)
 
 // Check command line arguments
 // Initialize fractal type
+
+/*
+// Set up fractol pointer (la "cassaforte" statica)
+// Da questo momento posso recuperare t_fractol *f da qualsiasi parte
+// del programma, senza variabili globali (sia da main che 
+da funzione cassaforte statica).
+// In pratica salvo l’indirizzo della variabile f del main, così posso
+// accedere sempre allo stesso oggetto sia dal main che da altre funzioni.
+*/
+ 
 // Setup signal handler for Ctrl+C
 // Initialize MLX, window, and image with error handling
 // Initialize fractal parameters
 // Set up event hooks
 // Draw the fractal and start the event loop
 // This line is theoretically unreachable due to mlx_loop
+
+/*
+Un file descriptor è un intero che identifica un file aperto o un flusso di output/input nel sistema operativo. I più comuni sono:
+
+File Descriptor	Significato
+0	Standard Input (stdin)
+1	Standard Output (stdout)
+2	Standard Error (stderr)
+*/
 
 int	main(int argc, char **argv)
 {
@@ -191,19 +262,18 @@ int	main(int argc, char **argv)
 	if (fractal_choice(&f, argv) != 0)
 		return (1);
 
-	signal(SIGINT, handle_signal);
+	fractol_set(&f);
+	setup_signals();
 
 	if (init_mlx(&f) != 0)
 		clean_exit(&f, 1);
 
-	ft_init(&f, argv);
+	ft_fractol_init(&f, argv);
 
 	mlx_key_hook(f.mlx.win, key, &f);
 	mlx_mouse_hook(f.mlx.win, mouse, &f);
 	mlx_hook(f.mlx.win, 17, 0, close_window, &f);
-
-	ft_draw(&f);
+	mlx_loop_hook(f.mlx.mlx, poll_exit_hook, &f);
 	mlx_loop(f.mlx.mlx);
-
 	return (0);
 }
