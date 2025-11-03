@@ -1,25 +1,26 @@
-srcs/control.c: In function ‘setup_signals’:
-srcs/control.c:249:19: error: storage size of ‘sa’ isn’t known
-  249 |  struct sigaction sa;
-      |                   ^~
-srcs/control.c:252:2: error: implicit declaration of function ‘sigemptyset’ [-Werror=implicit-function-declaration]
-  252 |  sigemptyset(&sa.sa_mask);
-      |  ^~~~~~~~~~~
-srcs/control.c:253:16: error: ‘SA_RESTART’ undeclared (first use in this function)
-  253 |  sa.sa_flags = SA_RESTART;
-      |                ^~~~~~~~~~
-srcs/control.c:253:16: note: each undeclared identifier is reported only once for each function it appears in
-srcs/control.c:254:2: error: implicit declaration of function ‘sigaction’ [-Werror=implicit-function-declaration]
-  254 |  sigaction(SIGINT, &sa, NULL);
-      |  ^~~~~~~~~
-srcs/control.c:254:12: error: ‘SIGINT’ undeclared (first use in this function)
-  254 |  sigaction(SIGINT, &sa, NULL);
-      |            ^~~~~~
-srcs/control.c:249:19: error: unused variable ‘sa’ [-Werror=unused-variable]
-  249 |  struct sigaction sa;
-      |                   ^~
-cc1: all warnings being treated as errors
-make: *** [Makefile:44: srcs/control.o] Error 1
+gcc -Wall -Wextra -Werror -g -Iincludes -Ilibft -Imlx_linux -c srcs/control.c -o srcs/control.o
+gcc -Wall -Wextra -Werror -g -Iincludes -Ilibft -Imlx_linux -c srcs/make_fractal.c -o srcs/make_fractal.o
+gcc -Wall -Wextra -Werror -g -Iincludes -Ilibft -Imlx_linux -c srcs/utils.c -o srcs/utils.o
+gcc -Wall -Wextra -Werror -g srcs/main.o srcs/fractal.o srcs/control.o srcs/make_fractal.o srcs/utils.o -Llibft -lft -Lmlx_linux -lmlx -lXext -lX11 -lm -lbsd -o fractol
+/usr/bin/ld: srcs/main.o: in function `ft_fractol_init':
+/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/main.c:35: undefined reference to `ft_atoi'
+/usr/bin/ld: srcs/main.o: in function `fractal_choice':
+/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/main.c:92: undefined reference to `ft_putstr_fd'
+/usr/bin/ld: /nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/main.c:93: undefined reference to `ft_putstr_fd'
+/usr/bin/ld: /nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/main.c:94: undefined reference to `ft_putstr_fd'
+/usr/bin/ld: srcs/main.o: in function `init_mlx':
+/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/main.c:195: undefined reference to `ft_putstr_fd'
+/usr/bin/ld: /nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/main.c:202: undefined reference to `ft_putstr_fd'
+/usr/bin/ld: srcs/main.o:/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/main.c:209: more undefined references to `ft_putstr_fd' follow
+/usr/bin/ld: srcs/main.o: in function `main':
+/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/main.c:262: undefined reference to `ft_bzero'
+/usr/bin/ld: srcs/make_fractal.o: in function `ft_string':
+/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/make_fractal.c:69: undefined reference to `ft_itoa'
+/usr/bin/ld: /nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/make_fractal.c:70: undefined reference to `ft_strjoin'
+/usr/bin/ld: /nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/make_fractal.c:74: undefined reference to `ft_itoa'
+/usr/bin/ld: /nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/make_fractal.c:75: undefined reference to `ft_strjoin'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:32: fractol] Error 1
 e3r9p5% 
 
 
