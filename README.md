@@ -1,7 +1,20 @@
+bj/mlx_int_set_win_event_mask.o obj/mlx_hook.o obj/mlx_rgb.o obj/mlx_destroy_image.o obj/mlx_mouse.o obj/mlx_screen_size.o obj/mlx_destroy_display.o
+ar: creating libmlx.a
+ranlib libmlx.a
+cp libmlx.a libmlx_Linux.a
+make[2]: Leaving directory '/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/mlx_linux'
+configure [info] : Execute "make all" from file "test/makefile.gen"
+make[2]: Entering directory '/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/mlx_linux/test'
+gcc -I/usr/include -O3 -I.. -g   -c -o main.o main.c
+gcc -o mlx-test main.o -L.. -lmlx -L/usr/include/../lib -lXext -lX11 -lm -lbsd
+make[2]: Leaving directory '/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/mlx_linux/test'
+make[1]: Leaving directory '/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/mlx_linux'
+gcc -Wall -Wextra -Werror -g -Iincludes -Ilibft -Imlx_linux -c srcs/main.c -o srcs/main.o
+gcc -Wall -Wextra -Werror -g -Iincludes -Ilibft -Imlx_linux -c srcs/fractal.c -o srcs/fractal.o
 gcc -Wall -Wextra -Werror -g -Iincludes -Ilibft -Imlx_linux -c srcs/control.c -o srcs/control.o
 gcc -Wall -Wextra -Werror -g -Iincludes -Ilibft -Imlx_linux -c srcs/make_fractal.c -o srcs/make_fractal.o
 gcc -Wall -Wextra -Werror -g -Iincludes -Ilibft -Imlx_linux -c srcs/utils.c -o srcs/utils.o
-gcc -Wall -Wextra -Werror -g srcs/main.o srcs/fractal.o srcs/control.o srcs/make_fractal.o srcs/utils.o -Llibft -lft -Lmlx_linux -lmlx -lXext -lX11 -lm -lbsd -o fractol
+gcc -Wall -Wextra -Werror -g srcs/main.o srcs/fractal.o srcs/control.o srcs/make_fractal.o srcs/utils.o libft/libft.a -Lmlx_linux -lmlx -lXext -lX11 -lm -lbsd -o fractol
 /usr/bin/ld: srcs/main.o: in function `ft_fractol_init':
 /nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/srcs/main.c:35: undefined reference to `ft_atoi'
 /usr/bin/ld: srcs/main.o: in function `fractal_choice':
