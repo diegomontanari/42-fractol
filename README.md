@@ -1,3 +1,74 @@
+configure [info] : Found X11 include path directory: /usr/include
+configure [info] : Generate "makefile.gen" from template "makefile.mk"
+configure [info] : Generate "test/makefile.gen" from template "test/makefile.mk"
+configure [info] : Execute "make all" from file "makefile.gen"
+make[2]: Entering directory '/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/mlx_linux'
+gcc -O3 -I/usr/include  -c mlx_init.c -o obj/mlx_init.o
+gcc -O3 -I/usr/include  -c mlx_new_window.c -o obj/mlx_new_window.o
+gcc -O3 -I/usr/include  -c mlx_pixel_put.c -o obj/mlx_pixel_put.o
+gcc -O3 -I/usr/include  -c mlx_loop.c -o obj/mlx_loop.o
+gcc -O3 -I/usr/include  -c mlx_mouse_hook.c -o obj/mlx_mouse_hook.o
+gcc -O3 -I/usr/include  -c mlx_key_hook.c -o obj/mlx_key_hook.o
+gcc -O3 -I/usr/include  -c mlx_expose_hook.c -o obj/mlx_expose_hook.o
+gcc -O3 -I/usr/include  -c mlx_loop_hook.c -o obj/mlx_loop_hook.o
+gcc -O3 -I/usr/include  -c mlx_int_anti_resize_win.c -o obj/mlx_int_anti_resize_win.o
+gcc -O3 -I/usr/include  -c mlx_int_do_nothing.c -o obj/mlx_int_do_nothing.o
+gcc -O3 -I/usr/include  -c mlx_int_wait_first_expose.c -o obj/mlx_int_wait_first_expose.o
+gcc -O3 -I/usr/include  -c mlx_int_get_visual.c -o obj/mlx_int_get_visual.o
+gcc -O3 -I/usr/include  -c mlx_flush_event.c -o obj/mlx_flush_event.o
+gcc -O3 -I/usr/include  -c mlx_string_put.c -o obj/mlx_string_put.o
+gcc -O3 -I/usr/include  -c mlx_set_font.c -o obj/mlx_set_font.o
+gcc -O3 -I/usr/include  -c mlx_new_image.c -o obj/mlx_new_image.o
+mlx_new_image.c: In function ‘shm_att_pb’:
+mlx_new_image.c:27:5: warning: ignoring return value of ‘write’ declared with attribute ‘warn_unused_result’ [-Wunused-result]
+   27 |     write(2,WARN_SHM_ATTACH,strlen(WARN_SHM_ATTACH));
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+gcc -O3 -I/usr/include  -c mlx_get_data_addr.c -o obj/mlx_get_data_addr.o
+gcc -O3 -I/usr/include  -c mlx_put_image_to_window.c -o obj/mlx_put_image_to_window.o
+gcc -O3 -I/usr/include  -c mlx_get_color_value.c -o obj/mlx_get_color_value.o
+gcc -O3 -I/usr/include  -c mlx_clear_window.c -o obj/mlx_clear_window.o
+gcc -O3 -I/usr/include  -c mlx_xpm.c -o obj/mlx_xpm.o
+gcc -O3 -I/usr/include  -c mlx_int_str_to_wordtab.c -o obj/mlx_int_str_to_wordtab.o
+gcc -O3 -I/usr/include  -c mlx_destroy_window.c -o obj/mlx_destroy_window.o
+gcc -O3 -I/usr/include  -c mlx_int_param_event.c -o obj/mlx_int_param_event.o
+gcc -O3 -I/usr/include  -c mlx_int_set_win_event_mask.c -o obj/mlx_int_set_win_event_mask.o
+gcc -O3 -I/usr/include  -c mlx_hook.c -o obj/mlx_hook.o
+gcc -O3 -I/usr/include  -c mlx_rgb.c -o obj/mlx_rgb.o
+gcc -O3 -I/usr/include  -c mlx_destroy_image.c -o obj/mlx_destroy_image.o
+gcc -O3 -I/usr/include  -c mlx_mouse.c -o obj/mlx_mouse.o
+gcc -O3 -I/usr/include  -c mlx_screen_size.c -o obj/mlx_screen_size.o
+gcc -O3 -I/usr/include  -c mlx_destroy_display.c -o obj/mlx_destroy_display.o
+ar -r libmlx.a obj/mlx_init.o obj/mlx_new_window.o obj/mlx_pixel_put.o obj/mlx_loop.o obj/mlx_mouse_hook.o obj/mlx_key_hook.o obj/mlx_expose_hook.o obj/mlx_loop_hook.o obj/mlx_int_anti_resize_win.o obj/mlx_int_do_nothing.o obj/mlx_int_wait_first_expose.o obj/mlx_int_get_visual.o obj/mlx_flush_event.o obj/mlx_string_put.o obj/mlx_set_font.o obj/mlx_new_image.o obj/mlx_get_data_addr.o obj/mlx_put_image_to_window.o obj/mlx_get_color_value.o obj/mlx_clear_window.o obj/mlx_xpm.o obj/mlx_int_str_to_wordtab.o obj/mlx_destroy_window.o obj/mlx_int_param_event.o obj/mlx_int_set_win_event_mask.o obj/mlx_hook.o obj/mlx_rgb.o obj/mlx_destroy_image.o obj/mlx_mouse.o obj/mlx_screen_size.o obj/mlx_destroy_display.o
+ar: creating libmlx.a
+ranlib libmlx.a
+cp libmlx.a libmlx_Linux.a
+make[2]: Leaving directory '/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/mlx_linux'
+configure [info] : Execute "make all" from file "test/makefile.gen"
+make[2]: Entering directory '/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/mlx_linux/test'
+gcc -I/usr/include -O3 -I.. -g   -c -o main.o main.c
+gcc -o mlx-test main.o -L.. -lmlx -L/usr/include/../lib -lXext -lX11 -lm -lbsd
+make[2]: Leaving directory '/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/mlx_linux/test'
+make[1]: Leaving directory '/nfs/homes/dmontana/GitHub Projects Identici Solo/42-fractol/mlx_linux'
+gcc -Wall -Wextra -Werror -g -Iincludes -Ilibft -Imlx_linux -c srcs/main.c -o srcs/main.o
+srcs/main.c: In function ‘main’:
+srcs/main.c:265:2: error: implicit declaration of function ‘fractol_set’ [-Werror=implicit-function-declaration]
+  265 |  fractol_set(&f);
+      |  ^~~~~~~~~~~
+srcs/main.c:266:2: error: implicit declaration of function ‘setup_signals’ [-Werror=implicit-function-declaration]
+  266 |  setup_signals();
+      |  ^~~~~~~~~~~~~
+srcs/main.c:276:27: error: ‘poll_exit_hook’ undeclared (first use in this function)
+  276 |  mlx_loop_hook(f.mlx.mlx, poll_exit_hook, &f);
+      |                           ^~~~~~~~~~~~~~
+srcs/main.c:276:27: note: each undeclared identifier is reported only once for each function it appears in
+cc1: all warnings being treated as errors
+make: *** [Makefile:44: srcs/main.o] Error 1
+e3r9p5% 
+
+
+
+
+
 # Computer Graphics Fractals - Fract-ol 🌀
 ![frattale](https://github.com/user-attachments/assets/7517bd1e-7847-4c83-a1d3-085f87b9a986)
 
