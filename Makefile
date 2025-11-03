@@ -29,7 +29,7 @@ all: $(LIBFT) $(MLX) $(NAME)
 
 # Build the main executable
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $^ -L$(LIBFTDIR) -lft -L$(MLXDIR) -lmlx -lXext -lX11 -lm -lbsd -o $@
+	$(CC) $(CFLAGS) $^ $(LIBFT) -L$(MLXDIR) -lmlx -lXext -lX11 -lm -lbsd -o $@
 
 # Build libft library
 $(LIBFT):
