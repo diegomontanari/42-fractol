@@ -214,45 +214,6 @@ void	clean_exit(t_fractol *f, int exit_code)
 	exit(exit_code);
 }
 
-/* -------------------------------------------------------------------------- */
-/*  Handler per SIGINT (Ctrl + C).                                            */
-/*  Imposta il flag di uscita a 1.                                            */
-/* -------------------------------------------------------------------------- */
-// Dato che exit_flag_slot() è un puntatore a int 
-// (ovvero ritorna un indirizzo di int), 
-// per assegnare 1 devo dereferenziare l'indirizzo, quindi accedere all'int.
-// Una volta fatto questo, posso assegnare 1 all'int.
-
-static void	sigint_handler(int sig)
-{
-	(void)sig;
-	*exit_flag_slot() = 1;
-}
-
-/* -------------------------------------------------------------------------- */
-/*  Registra il signal handler per SIGINT usando sigaction().                 */
-/*                                                                            */
-/*  - Usa SA_RESTART per far riprendere automaticamente le system call         */
-/*    eventualmente interrotte dal segnale. Questo evita che il programma      */
-/*    si blocchi o ritorni errori indesiderati (es. EINTR) durante operazioni  */
-/*    di input/output o eventi gestiti da MLX.                                */
-/*                                                                            */
-/*  - Imposta la maschera dei segnali a vuota con sigemptyset(), in modo che   */
-/*    nessun altro segnale venga bloccato mentre il nostro handler è attivo.   */
-/*                                                                            */
-/*  - Collega SIGINT (Ctrl + C) al nostro handler sicuro, che imposta solo     */
-/*    un flag d’uscita invece di terminare bruscamente il programma.           */
-/* -------------------------------------------------------------------------- */
-
-void	setup_signals(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = sigint_handler;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-}
 
 
 /**

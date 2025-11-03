@@ -74,9 +74,14 @@ typedef struct s_fractol
 /* Main functions */
 int		main(int argc, char **argv);
 void	menu(void);
-void	ft_init(t_fractol *fractol, char **av);
+void	ft_fractol_init(t_fractol *fractol, char **av);
 int		fractal_choice(t_fractol *fractol, char **av);
 double	ft_atof(const char *str);
+
+/* Libft functions */
+void	ft_putstr_fd(char *s, int fd);
+int		ft_atoi(const char *str);
+void	ft_bzero(void *s, size_t n);
 
 /* Types of fractal */
 int		julia(t_fractol *fractol);
@@ -90,12 +95,6 @@ void	put_pixel(t_fractol *fractol, int depth);
 void	ft_string(t_fractol *f);
 int		ft_draw(t_fractol *fractol);
 
-/* Accessor functions */
-t_fractol	**fractol_slot(void);
-void		fractol_set(t_fractol *f);
-t_fractol	*fractol_get(void);
-int			*exit_flag_slot(void);
-
 /* Control function */
 int		key(int key, t_fractol *fractol);
 void	zoom_in(int x, int y, t_fractol *f);
@@ -103,9 +102,5 @@ void	zoom_out(int x, int y, t_fractol *f);
 int		mouse(int mouse, int x, int y, t_fractol *fractol);
 int		close_window(t_fractol *fractol);
 void	clean_exit(t_fractol *f, int exit_code);
-void	handle_signal(int sig);
-void	setup_signals(void);
-int		poll_exit_hook(t_fractol *f);
 
 #endif
-

@@ -150,6 +150,7 @@ Come è strutturata la memoria (line_length)
 In che ordine sono i byte (endian)
 */
 
+
 /*
  * Funzione principale del programma Fractol.
  *
@@ -223,7 +224,7 @@ static int init_mlx(t_fractol *f)
 // Check command line arguments
 // Initialize fractal type
 
-/*
+/* NON PIU NON PIU QUESTA ERA VECCHIA IMPLEMENTAZIONE CON SEGNALI
 // Set up fractol pointer (la "cassaforte" statica)
 // Da questo momento posso recuperare t_fractol *f da qualsiasi parte
 // del programma, senza variabili globali (sia da main che 
@@ -231,13 +232,12 @@ da funzione cassaforte statica).
 // In pratica salvo l’indirizzo della variabile f del main, così posso
 // accedere sempre allo stesso oggetto sia dal main che da altre funzioni.
 */
- 
-// Setup signal handler for Ctrl+C
+
 // Initialize MLX, window, and image with error handling
 // Initialize fractal parameters
 // Set up event hooks
 // Draw the fractal and start the event loop
-// This line is theoretically unreachable due to mlx_loop
+// This line (last clean exit) is theoretically unreachable due to mlx_loop
 
 /*
 Un file descriptor è un intero che identifica un file aperto o un flusso di output/input nel sistema operativo. I più comuni sono:
@@ -259,21 +259,22 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
+	ft_bzero(&f, sizeof(t_fractol));
+
 	if (fractal_choice(&f, argv) != 0)
 		return (1);
-
-	fractol_set(&f);
-	setup_signals();
 
 	if (init_mlx(&f) != 0)
 		clean_exit(&f, 1);
 
 	ft_fractol_init(&f, argv);
+	ft_draw(&f);
 
 	mlx_key_hook(f.mlx.win, key, &f);
 	mlx_mouse_hook(f.mlx.win, mouse, &f);
 	mlx_hook(f.mlx.win, 17, 0, close_window, &f);
-	mlx_loop_hook(f.mlx.mlx, poll_exit_hook, &f);
+
 	mlx_loop(f.mlx.mlx);
+	clean_exit(&f, 0);
 	return (0);
 }
